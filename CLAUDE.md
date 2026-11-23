@@ -1,133 +1,133 @@
 # Studere
 
-Workspace de estudo e vault do Obsidian (abrir esta pasta como vault). Reúne pesquisas verificadas num acervo único, vivo e interligado, e condensa o acervo em cursos práticos.
+Study workspace and Obsidian vault (open this folder as a vault). It gathers verified research into a single, living, interlinked library, and condenses the library into practical courses.
 
-Idioma: português (citar o original quando a fonte for em inglês). Termos técnicos mantidos, sempre com legenda.
+Language: English (quote the original when the source is in another language). Technical terms are kept, always with a gloss.
 
-**O usuário não chama comandos.** Ele conversa; você identifica a intenção, usa o roteamento abaixo e executa. Agentes, skills e workflows deste projeto estão pré-autorizados: rode-os sem pedir confirmação.
-
----
-
-# ROTEADOR
-
-Identifique a intenção do pedido e siga a rota. Na dúvida entre duas, pergunte em uma linha.
-
-## Rota A — Estudar / aprender / criar curso (tema novo, ou aprofundar um existente)
-
-Gatilhos: "quero estudar/aprender/entender X", "me ensina X", "quero um curso de X", "quero aprofundar em X", "preciso saber X para Y".
-
-1. **Entrevista:** carregue a skill `entrevista-estudo`. Verifique o acervo, faça as perguntas que faltam (nível, geral vs específico, objetivo/prática, resultado) em **uma** rodada.
-2. **Pesquisa:** rode o workflow `pesquisar-tema` (etapas 0–3).
-   `Workflow({ name: "pesquisar-tema", args: { tema, contexto, objetivo, nivel, profundidade, foco, hoje } })`
-3. **Curso** (padrão; pule só se o usuário pediu apenas pesquisa): rode `gerar-curso` (etapa 4).
-   `Workflow({ name: "gerar-curso", args: { tema, caminho, nome, nivelInicial, nivelAlvo, foco, preferenciaPratica, hoje } })`
-   `caminho` = pasta retornada por `pesquisar-tema`.
-4. **Se `gerar-curso` retornar `parado: true`** por lacunas: rode `pesquisar-tema` de novo com `foco` = as lacunas, depois `gerar-curso` mais uma vez. Se parar de novo, mostre as lacunas ao usuário e diga o que falta.
-5. **Relate** em poucas linhas: o que foi para o acervo (caminho, verificados vs pendentes, lacunas), o curso (pasta, módulos, revisão) e como abrir (`00-Visão geral`).
-
-Se o tema já existe no acervo e o usuário quer só o curso, pule o passo 2 (confirme que o MOC está `revisada`; senão pesquise antes). Se quer aprofundar, rode o passo 2 com `profundidade: especifico` e `foco`.
-
-## Rota B — Consultar a base ("pesquise na nossa base", "o que temos sobre X", "o que sabemos de X")
-
-Carregue a skill `consultar-acervo`. Responde **só com o acervo, sem internet**, com links, confiança, validade e lacunas. Se não houver nada, ofereça a Rota A. Se estiver vencido ou em rascunho, ofereça a Rota C.
-
-## Rota C — Revalidar ("ainda faz sentido?", "está atual?", "confere com a internet")
-
-1. Localize o tema no acervo (Grep/Glob) e identifique a pasta (`caminho`).
-2. Rode `Workflow({ name: "revalidar-tema", args: { tema, caminho, aplicar: false, hoje } })`.
-3. Apresente o relatório: por nota, `atual` / `parcial` / `desatualizada` / `contradita` / `inconclusiva`, o que mudou (com fonte e nível) e novidades que o acervo não cobre. Destaque cursos que dependem de notas afetadas (Grep por `[[Nota]]`).
-4. Se houver mudanças, pergunte **uma vez** se atualizo o acervo. Se sim, rode de novo com `aplicar: true` (o conhecimento antigo é preservado no histórico, e o `verificador` reverifica o que foi reescrito).
-
-## Rota D — Saúde do acervo ("tem link quebrado?", "organiza/limpa a base", "o que está vencido?")
-
-Carregue a skill `auditar-acervo`. Relatório; só corrija o que o usuário aprovar.
-
-## Rota E — Edição pontual (corrigir uma nota, mover/renomear, ajustar um módulo)
-
-Faça direto, respeitando as regras do acervo abaixo. Se a edição mudar fatos, não basta editar: passe pelo `verificador` (agente) antes de marcar `verificado`.
-
-## Rota F — Fora do escopo do Studere
-
-Responda normalmente.
+**The user does not call commands.** They talk; you identify the intent, use the routing below, and execute. Agents, skills and workflows in this project are pre-authorized: run them without asking for confirmation.
 
 ---
 
-# Quem faz o quê
+# ROUTER
 
-Regra de ouro: **agente** = trabalho isolado e pesado com ferramentas próprias; **skill** = protocolo que roda na conversa principal (precisa do usuário ou da apresentação final); **workflow** = orquestração determinística de vários agentes. Não duplicar papéis.
+Identify the intent of the request and follow the route. When torn between two, ask in one line.
 
-| Tipo | Nome | Papel |
-|------|------|-------|
-| Agente | `pesquisador` | busca na web (docs, artigos científicos, livros, blogs técnicos), lê e registra fontes (etapa 1) |
-| Agente | `arquivista` | escreve achados e MOCs, evita duplicatas, liga áreas (etapas 2 e 3) |
-| Agente | `verificador` | tenta refutar; checa atualidade; revisa módulos. Único que aprova |
-| Agente | `autor-curso` | planeja a trilha e escreve módulos a partir do acervo (etapa 4) |
-| Agente | `ilustrador` | diagramas Mermaid/SVG que mostram o mecanismo |
-| Skill | `entrevista-estudo` | entrevistar o usuário (precisa dele na conversa) |
-| Skill | `consultar-acervo` | ler o acervo e apresentar a resposta |
-| Skill | `auditar-acervo` | checagem de integridade e relatório |
-| Workflow | `pesquisar-tema` | etapas 0 a 3: escopo → fontes → achados → verificação → síntese |
-| Workflow | `gerar-curso` | etapa 4: plano → módulos (escrever, ilustrar, revisar) → visão geral |
-| Workflow | `revalidar-tema` | compara notas com a internet atual |
+## Route A — Study / learn / create a course (new topic, or go deeper on an existing one)
 
-Não pesquise nem escreva conteúdo no acervo diretamente na conversa principal: delegue. A conversa principal entrevista, roteia, consulta e relata.
+Triggers: "I want to study/learn/understand X", "teach me X", "I want a course on X", "I want to go deeper on X", "I need to know X for Y".
+
+1. **Interview:** load the `study-interview` skill. Check the library, ask the missing questions (level, broad vs specific, goal/practice, outcome) in **one** round.
+2. **Research:** run the `research-topic` workflow (stages 0–3).
+   `Workflow({ name: "research-topic", args: { topic, context, goal, level, depth, focus, today } })`
+3. **Course** (default; skip only if the user asked for research alone): run `generate-course` (stage 4).
+   `Workflow({ name: "generate-course", args: { topic, path, name, startLevel, targetLevel, focus, practicePreference, today } })`
+   `path` = the folder returned by `research-topic`.
+4. **If `generate-course` returns `stopped: true`** because of gaps: run `research-topic` again with `focus` = the gaps, then `generate-course` once more. If it stops again, show the gaps to the user and say what is missing.
+5. **Report** in a few lines: what went into the library (path, verified vs pending, gaps), the course (folder, modules, review) and how to open it (`00-Overview`).
+
+If the topic already exists in the library and the user only wants the course, skip step 2 (confirm that the MOC is `reviewed`; otherwise research first). If they want to go deeper, run step 2 with `depth: specific` and `focus`.
+
+## Route B — Query the knowledge base ("search our base", "what do we have on X", "what do we know about X")
+
+Load the `query-library` skill. It answers **from the library only, with no internet**, with links, confidence, validity and gaps. If there is nothing, offer Route A. If the material is expired or in draft, offer Route C.
+
+## Route C — Revalidate ("does it still hold?", "is it up to date?", "check it against the internet")
+
+1. Locate the topic in the library (Grep/Glob) and identify the folder (`path`).
+2. Run `Workflow({ name: "revalidate-topic", args: { topic, path, apply: false, today } })`.
+3. Present the report: per note, `current` / `partial` / `outdated` / `contradicted` / `inconclusive`, what changed (with source and level) and new developments the library does not cover. Highlight courses that depend on affected notes (Grep for `[[Note]]`).
+4. If there are changes, ask **once** whether to update the library. If yes, run again with `apply: true` (old knowledge is preserved in the history, and the `verifier` re-verifies what was rewritten).
+
+## Route D — Library health ("any broken links?", "organize/clean the base", "what is expired?")
+
+Load the `audit-library` skill. It produces a report; fix only what the user approves.
+
+## Route E — Targeted edit (fix a note, move/rename, adjust a module)
+
+Do it directly, respecting the library rules below. If the edit changes facts, editing is not enough: pass it through the `verifier` (agent) before marking `verified`.
+
+## Route F — Outside Studere's scope
+
+Answer normally.
 
 ---
 
-# Etapas (detalhes e portões em `_regras/etapas.md`)
+# Who does what
 
-| # | Etapa | Camada | Template | Responsável |
-|---|-------|--------|----------|-------------|
-| 0 | Pedido | — | `_templates/0-Pedido/` | arquivista |
-| 1 | Fontes | `fonte` | `_templates/1-Fonte/` | `pesquisador` |
-| 2 | Achados | `achado` | `_templates/2-Achado/` | `arquivista` + `verificador` |
-| 3 | Síntese | `sintese` | `_templates/3-Sintese/` | `arquivista` + `ilustrador` |
-| 4 | Curso | `curso` | `_templates/4-Curso/` | `autor-curso` + `ilustrador` + `verificador` |
+Golden rule: **agent** = isolated, heavy work with its own tools; **skill** = protocol that runs in the main conversation (needs the user or the final presentation); **workflow** = deterministic orchestration of several agents. Do not duplicate roles.
 
-Sempre valem: **sem pular etapas**; **quem escreve não aprova**; status só avança com evidência; lacuna volta à etapa anterior; toda mudança entra no `## Histórico`.
+| Type | Name | Role |
+|------|------|------|
+| Agent | `researcher` | searches the web (docs, scientific papers, books, technical blogs), reads and records sources (stage 1) |
+| Agent | `archivist` | writes findings and MOCs, avoids duplicates, links areas (stages 2 and 3) |
+| Agent | `verifier` | tries to refute; checks currency; reviews modules. The only one that approves |
+| Agent | `course-author` | plans the track and writes modules from the library (stage 4) |
+| Agent | `illustrator` | Mermaid/SVG diagrams that show the mechanism |
+| Skill | `study-interview` | interview the user (needs them in the conversation) |
+| Skill | `query-library` | read the library and present the answer |
+| Skill | `audit-library` | integrity check and report |
+| Workflow | `research-topic` | stages 0 to 3: scope → sources → findings → verification → synthesis |
+| Workflow | `generate-course` | stage 4: plan → modules (write, illustrate, review) → overview |
+| Workflow | `revalidate-topic` | compares notes against the current internet |
+
+Do not research or write content into the library directly in the main conversation: delegate. The main conversation interviews, routes, queries and reports.
 
 ---
 
-# Regras do acervo vivo
+# Stages (details and gates in `_rules/stages.md`)
 
-- **Dois eixos:** temático = árvore `Acervo/<Domínio>/<Área>/<Subárea>/` (cresce conforme os pedidos; sem categorias vazias; escolher o lugar mais específico; reutilizar pastas). Maturidade = `camada` + `status` no frontmatter.
-- **Buscar antes de criar.** Se o conceito existe, estender e atualizar; nota nova só se não existir.
-- **Nota atômica:** um conceito por nota; nome = conceito, em português, sem prefixo de data.
-- **Links:** `[[wikilinks]]` entre notas, inclusive entre áreas diferentes. Todo conceito citado que tenha nota é linkado.
-- **MOC por tema:** `_MOC <Tema>.md` (síntese, índice, lacunas, próximos passos), atualizado a cada adição.
-- **Fontes brutas:** `_fontes/` na subárea, uma nota por fonte.
-- **Histórico:** `## Histórico` no fim de cada nota, `- AAAA-MM-DD: o que mudou`; atualizar `atualizado`.
-- **Nunca apagar conhecimento sem registrar** o motivo no histórico.
+| # | Stage | Layer | Template | Owner |
+|---|-------|-------|----------|-------|
+| 0 | Request | — | `_templates/0-Request/` | archivist |
+| 1 | Sources | `source` | `_templates/1-Source/` | `researcher` |
+| 2 | Findings | `finding` | `_templates/2-Finding/` | `archivist` + `verifier` |
+| 3 | Synthesis | `synthesis` | `_templates/3-Synthesis/` | `archivist` + `illustrator` |
+| 4 | Course | `course` | `_templates/4-Course/` | `course-author` + `illustrator` + `verifier` |
 
-# Regras de veracidade
+Always hold: **no skipping stages**; **whoever writes does not approve**; status only advances with evidence; a gap goes back to the previous stage; every change goes into `## History`.
 
-- **Fontes (aceitas, em ordem de peso):**
-  - Nível A: documentação oficial e especificações, artigos científicos (revisados por pares, revisões sistemáticas, surveys), livros-texto, normas, órgãos oficiais.
-  - Nível B: blogs técnicos de referência (empresas, pesquisadores, engenheiros reconhecidos), material de cursos universitários, palestras de especialistas, preprints de grupos reconhecidos (marcados como preprint).
-  - Nível C: fóruns, Medium genérico, vídeos, redes. Só como pista; nunca base de afirmação.
-- Toda afirmação relevante tem fonte e data de acesso. Conceito base exige 2 ou mais fontes independentes. Abrir e ler a URL antes de citar.
-- `confianca`: `consolidado` | `debatido` | `incerto`. Contradições entre fontes ficam registradas.
-- Temas que mudam rápido (software, IA, regulação) recebem `validade` (data de revisão).
-- Sem fonte, não entra. Marcar `não verificado` em vez de inventar. Nunca fabricar citações, URLs ou números.
+---
 
-# Cursos
+# Living library rules
 
-`Cursos/Curso - <Nome>/`: `00-Visão geral.md` + um arquivo por módulo. O curso **não copia** o acervo: linka (`notas-base`), reutiliza diagramas, escreve só o específico. **Nenhum fato fora do acervo.**
+- **Two axes:** thematic = tree `Library/<Domain>/<Area>/<Subarea>/` (grows with requests; no empty categories; pick the most specific place; reuse folders). Maturity = `layer` + `status` in the frontmatter.
+- **Search before creating.** If the concept exists, extend and update it; create a new note only if it does not exist.
+- **Atomic note:** one concept per note; name = the concept, in English, no date prefix.
+- **Links:** `[[wikilinks]]` between notes, including across different areas. Every cited concept that has a note is linked.
+- **MOC per topic:** `_MOC <Topic>.md` (synthesis, index, gaps, next steps), updated on every addition.
+- **Raw sources:** `_sources/` in the subarea, one note per source.
+- **History:** `## History` at the end of every note, `- YYYY-MM-DD: what changed`; update `updated`.
+- **Never delete knowledge without recording** the reason in the history.
 
-**Cada módulo: teoria primeiro, prática depois.** Objetivos → Teoria completa (termos técnicos mantidos, legenda na primeira ocorrência: `> **Termo**: definição`) → Visuais → Prática (exemplo guiado, exercícios básico/intermediário/avançado, mini-projeto, gabarito, checagem). Trilha do básico ao avançado; formato dos exercícios conforme o tema, sem padrão fixo.
+# Truthfulness rules
 
-# Recursos visuais
+- **Sources (accepted, in order of weight):**
+  - Level A: official documentation and specifications, scientific papers (peer-reviewed, systematic reviews, surveys), textbooks, standards, official bodies.
+  - Level B: reference technical blogs (companies, researchers, recognized engineers), university course material, expert talks, preprints from recognized groups (marked as preprint).
+  - Level C: forums, generic Medium, videos, social media. Only as a lead; never the basis of a claim.
+- Every relevant claim has a source and an access date. A foundational concept requires 2 or more independent sources. Open and read the URL before citing.
+- `confidence`: `established` | `debated` | `uncertain`. Contradictions between sources are recorded.
+- Fast-changing topics (software, AI, regulation) get `review-by` (a review date).
+- No source, no entry. Mark `unverified` instead of making things up. Never fabricate quotes, URLs or numbers.
 
-Mermaid em blocos de código (nativo no Obsidian); SVG em `Assets/<tema>/` com `![[arquivo.svg]]`; Excalidraw se houver plugin. Todo diagrama mostra o mecanismo real, com legenda em itálico.
+# Courses
 
-# Estrutura
+`Courses/Course - <Name>/`: `00-Overview.md` + one file per module. The course **does not copy** the library: it links (`base-notes`), reuses diagrams, and writes only what is specific. **No fact outside the library.**
+
+**Each module: theory first, practice after.** Objectives → Complete theory (technical terms kept, gloss on first occurrence: `> **Term**: definition`) → Visuals → Practice (guided example, basic/intermediate/advanced exercises, mini-project, answer key, check). Track from basic to advanced; exercise format depends on the topic, no fixed pattern.
+
+# Visual resources
+
+Mermaid in code blocks (native in Obsidian); SVG in `Assets/<topic>/` with `![[file.svg]]`; Excalidraw if the plugin is present. Every diagram shows the real mechanism, with an italic caption.
+
+# Structure
 
 ```
-00-Inbox/         pedidos (etapa 0)
-Acervo/           árvore temática (único acervo vivo)
-Cursos/           cursos gerados a partir do acervo
-Assets/           imagens e diagramas
-_templates/       0-Pedido, 1-Fonte, 2-Achado, 3-Sintese, 4-Curso
-_regras/          etapas.md
+00-Inbox/         requests (stage 0)
+Library/          thematic tree (the single living library)
+Courses/          courses generated from the library
+Assets/           images and diagrams
+_templates/       0-Request, 1-Source, 2-Finding, 3-Synthesis, 4-Course
+_rules/           stages.md
 .claude/          agents/, skills/, workflows/
 ```
