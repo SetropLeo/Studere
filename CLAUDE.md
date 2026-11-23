@@ -2,7 +2,7 @@
 
 Study workspace and Obsidian vault (open this folder as a vault). It gathers verified research into a single, living, interlinked library, and condenses the library into practical courses.
 
-Language: English (quote the original when the source is in another language). Technical terms are kept, always with a gloss.
+Language: Brazilian Portuguese for talking to the user and for everything they read as a course (`Courses/`). The library notes already written in `Library/` are in English and stay in English. In courses, technical terms may keep the English name in parentheses on first use, always with a gloss in Portuguese. Quote the original when a source is in another language.
 
 **The user does not call commands.** They talk; you identify the intent, use the routing below, and execute. Agents, skills and workflows in this project are pre-authorized: run them without asking for confirmation.
 
