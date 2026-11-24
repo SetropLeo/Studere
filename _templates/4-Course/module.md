@@ -1,86 +1,145 @@
----
-title:
-stage: 4
-layer: course
-status: planned         # planned | written | reviewed | published
-type: module
-course:
-module:
-level: basic            # basic | intermediate | advanced
-created: {{date:YYYY-MM-DD}}
-updated: {{date:YYYY-MM-DD}}
-base-notes: []          # [[links]] from the library that support the theory
-reviewed-by:
-tags: [course, module]
----
+# {{NN}} · {{Título do módulo}}
 
-# Module {{module}} — {{title}}
-
-## Objectives
-
-By the end of this module you will be able to:
-
--
-
-## Prerequisites
-
--
+<!--
+Modelo de módulo de curso. Estrutura e regras em CLAUDE.md, seção "Courses".
+Arquivo: Courses/Curso - <Nome>/NN - Título.md (dois dígitos, sem dois-pontos no nome).
+Escrever em português. Termos técnicos em inglês entre parênteses, na primeira vez, com glosa.
+Nada de confiança, status ou lacunas dentro do módulo: isso vai para as notas de entrega.
+-->
 
 ---
+título: Título do módulo
+módulo: NN
+tempo: 30 min
+notas-base: "[[ ]]"
+---
 
-# Part 1 — Theory
+# {{NN}} · {{Título do módulo}}
 
-> **Term**: gloss on first occurrence.
+**Tempo estimado:** 30 minutos · **Pré-requisito:** [[NN-1 - ]].
 
-<!-- Complete, detailed theory. Keep technical terms. Link the library: [[ ]]. No fact outside the library. -->
+**Ao final você vai conseguir:**
 
-## Visuals
+1. verbo de ação + objetivo
+2. verbo de ação + objetivo
+3. verbo de ação + objetivo
+
+**Antes de começar:** um lembrete curto do que vem dos módulos anteriores, com link.
+
+---
+
+## Para começar
+
+Um problema ou pergunta real, em até 120 palavras. Por que importa.
+
+---
+
+## Mapa do módulo
 
 ```mermaid
 flowchart LR
-  A --> B
+  A["Conceito 1"] --> B["Conceito 2"]
 ```
 
-*Caption: what the diagram shows.*
+*Figura: o que o diagrama mostra.*
 
-## Theory summary
-
--
+**Como ler:** como seguir o diagrama.
 
 ---
 
-# Part 2 — Practice
+## Mini-aula 1: título
 
-> Only start here after finishing Part 1.
+> [!tip] Ideia
+> Uma frase.
 
-## Guided example
+Intuição ou analogia (se houver; dizer que é analogia).
 
-## Exercises
+> [!info] Definição
+> Definição precisa e curta. **Termo** (term): explicação.
 
-### Basic
+Exemplo, com código e saída real quando couber.
 
-1.
+> [!warning] Armadilha comum
+> O erro mais frequente.
 
-### Intermediate
+> [!question]- Checkpoint
+> 1. Pergunta.
+>
+> > [!success]- Resposta
+> > Resposta.
 
-1.
+---
 
-### Advanced
+## Exercícios
 
-1.
+Cada exercício: enunciado, código inicial com `...`, `assert` com mensagem, `print("Passou!")`.
 
-## Mini-project
+### Aquecimento
 
-## Answer key
+**A1. Título.** Enunciado, indicando a função a completar.
 
-## Comprehension check
+```python
+def funcao(...):
+    """Descrição."""
+    ...
 
-- [ ]
+assert funcao(...) == ..., "mensagem"
+print("Passou!")
+```
 
-## Next module
+> [!hint]- Dica 1
+> Dica.
+
+> [!hint]- Dica 2
+> Dica.
+
+> [!example]- Solução
+> ```python
+> def funcao(...):
+>     """Descrição."""
+>     ...
+> ```
+> **Erro comum:** o erro mais frequente, e por que acontece.
+
+### Praticando
+
+**P1.** ...
+
+### Desafio
+
+**D1.** ...
+
+---
+
+## Mini-projeto (opcional)
+
+**Objetivo.** Uma frase.
+
+(código inicial, dicas, erro comum e solução, como nos exercícios)
+
+---
+
+## Fechando
+
+**Resumo**
+
+- ponto 1
+- ponto 2
+
+**Glossário rápido**
+
+- **Termo** (term): definição.
+
+**Perguntas de revisão**
+
+1. Pergunta.
+2. Pergunta.
+3. Pergunta.
+
+**E agora?** O próximo módulo e por quê.
+
+---
+
+## Para ir mais fundo
 
 - [[ ]]
-
-## History
-
-- {{date:YYYY-MM-DD}}: created.

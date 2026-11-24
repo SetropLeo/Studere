@@ -9,10 +9,17 @@ Routed from requests like "how healthy is the library", "any broken links?", "cl
 
 ## Checks
 
-1. **Broken links:** every `[[link]]` resolves to an existing note.
+1. **Broken links:** every `[[link]]` resolves to an existing note, in `Library/`, `Courses/` and `_rules/`.
 2. **Orphans:** notes that no MOC lists and nothing links to.
-3. **Frontmatter:** required template fields (`layer`, `status`, `created`, `updated`, `confidence` on findings; `level`, `url`, `accessed` on sources).
-4. **Inconsistent status:** finding `published`/`verified` without `verified-on`; MOC `reviewed` listing a `draft` note; module `reviewed` without `reviewed-by`; course resting on an unverified note.
+3. **Frontmatter:** required template fields (`layer`, `status`, `created`, `updated`, `confidence` on findings; `level`, `url`, `accessed` on sources). Course modules have `título`, `módulo`, `tempo`, `notas-base` and no `status`.
+4. **Inconsistent status:** finding `published`/`verified` without `verified-on`; MOC `reviewed` listing a `draft` note; finding `verified` with a single source and `confidence: established` (allowed only in `light` mode, and then it must say so in the MOC).
+
+4b. **Courses:**
+   - index `00 - Comece aqui.md` exists and lists every `NN - Título.md` of the folder;
+   - module file names are `NN - Título.md`, with two-digit numbers and no colon;
+   - every module has the sections of `CLAUDE.md` (section Courses), in order;
+   - no `{{...}}` placeholder left; no confidence or "lacuna" text inside a module;
+   - a module refers only to notes that exist in `Library/` (`notas-base`).
 5. **Expired validity:** `review-by` earlier than today's date. List for re-verification.
 6. **Duplicates:** very similar titles or concepts (merge candidates).
 7. **Sources:** note without a source; level-C-only source supporting a claim; `url-verified: false`.
@@ -21,7 +28,7 @@ Routed from requests like "how healthy is the library", "any broken links?", "cl
 
 ## Execution
 
-Use Glob/Grep. For large libraries, split by subarea and fire `Explore`/`general-purpose` agents in parallel (read-only).
+Use Glob/Grep in this conversation. Most checks are a Grep over the frontmatter and the links, so they are cheap. Do not launch agents for the audit; if a check needs reading many notes, do it one subarea at a time.
 
 ## Output
 
