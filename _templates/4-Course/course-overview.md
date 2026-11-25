@@ -1,52 +1,34 @@
----
-title:
-stage: 4
-layer: course
-status: planned         # planned | written | reviewed | published
-type: overview
-created: {{date:YYYY-MM-DD}}
-updated: {{date:YYYY-MM-DD}}
-audience:
-prerequisites: []
-base-moc: "[[ ]]"
-tags: [course]
----
+# {{Nome do curso}}
 
-# {{title}}
+<!--
+Modelo do índice de curso: "00 - Comece aqui.md", na pasta Courses/Curso - <Nome>/.
+Regras em CLAUDE.md, seção "Courses". Escrever em português. Sem status, sem History.
+-->
 
-## Who it is for
+Este curso ensina ... a quem ... . Você não precisa de ... além de ... .
 
-## What you will be able to do at the end
+## Como estudar
 
--
+Cada módulo leva cerca de 30 minutos:
 
-## Prerequisites
+1. **Para começar:** um problema real que motiva o assunto.
+2. **Mini-aulas:** teoria em blocos pequenos. Leia a ideia e o exemplo, e responda ao checkpoint antes de abrir a resposta.
+3. **Exercícios:** cada um tem um bloco de código com testes `assert`. Complete a função, rode e veja se aparece `Passou!`.
+4. **Fechando:** resumo, glossário e perguntas de revisão.
 
--
+**Como rodar o código no Windows:** copie o bloco para um arquivo `.py` e rode `python nome.py` no terminal.
 
-## Track
+**Callouts recolhidos:** dicas e soluções começam fechadas. Tente resolver antes de abrir.
 
-| Module | Level | Topic | Main practice |
-|--------|-------|-------|---------------|
-| [[01 - ]] | basic | | |
+## Mapa dos módulos
 
-```mermaid
-flowchart LR
-  M1[Module 1] --> M2[Module 2]
-```
+Os módulos seguem a ordem sugerida de estudo.
 
-## How to study
+**Bloco 1: Nome do bloco**
 
-Each module has **Theory** and then **Practice**. Read all the theory before starting the exercises. Technical terms are glossed on first occurrence.
+1. [[01 - Título]]
+2. [[02 - Título]]
 
-## General glossary
+## Para começar agora
 
-> **Term**: definition.
-
-## Library base
-
-- [[ ]]
-
-## History
-
-- {{date:YYYY-MM-DD}}: planned.
+Abra [[01 - Título]]. Pré-requisitos: ...

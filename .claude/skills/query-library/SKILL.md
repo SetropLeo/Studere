@@ -10,7 +10,7 @@ Runs in the main conversation. **Does not use the web**: answers only with what 
 ## Steps
 
 1. **Search:** Grep/Glob in `Library/` and `Courses/` for the term and synonyms (any language) in titles, tags and body. Start with the `_MOC *.md` files: they index the topic.
-2. **Read** the relevant notes (MOC first, then the atomic ones that answer the question). If there are many (more than ~10), delegate the reading to an `Explore` agent and work with the summary.
+2. **Read** the relevant notes in this conversation: the MOC first, then the atomic ones that answer the question. Read at most about 5 atomic notes in full; for the rest, read only the headline and the summary line. Do not delegate the reading to agents: reading a few notes is cheaper than starting an agent.
 3. **Answer** the user's question with the library's content, synthesized, and right below:
    - **Notes used:** list of `[[wikilinks]]`.
    - **Confidence and validity:** `confidence`, `status` and whether `review-by` has passed.

@@ -18,6 +18,7 @@ Runs in the main conversation (needs the user). Goal: collect the workflows' `ar
 2. **Scope** (`depth`, `focus`): Broad overview of the whole topic | Go deep on something specific (what?).
 3. **What for** (`goal`, `context`): e.g. use at work, build a project, understand out of curiosity, prepare for an interview/exam. Also ask about stack, language or tools if the topic is technical (`practicePreference`).
 4. **Outcome** (`outcome`): Research + full course (default, the user usually wants this) | Research/library only.
+5. **Verification** (`verification`): only if the user cares about rigor. `strict` (default: two independent level A/B sources per foundational concept) | `light` (one good level A/B source per concept; the note and the MOC say so). Never offer `light` as the default; it is used when the user chooses it.
 
 Rules:
 - Ask only what would change the result. If something is inferable, assume it and record the assumption.
@@ -35,4 +36,5 @@ Assemble and confirm in one line, without waiting for approval: "I'll research X
 | broad vs specific | `depth` (`broad` \| `specific`), `focus` |
 | what for | `goal` |
 | practice stack/format | `practicePreference` |
-| outcome | decides whether to run `generate-course` afterwards |
+| verification | `verification` (`strict` \| `light`) |
+| outcome | decides whether to build the course after the research (in the conversation, see `CLAUDE.md` section Courses) |

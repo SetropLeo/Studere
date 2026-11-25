@@ -3,6 +3,7 @@ stage: 0
 date: {{date:YYYY-MM-DD}}
 status: pending         # pending | scoped
 outcome: library        # library | library+course
+verification: strict    # strict (default) | light (user's choice; see CLAUDE.md, Truthfulness rules)
 path:                   # Library/Domain/Area/Subarea (filled in when scoping)
 tags: [request]
 ---
